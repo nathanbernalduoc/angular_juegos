@@ -9,5 +9,10 @@ import { RouterOutlet } from '@angular/router';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'AppWeb';
+
+  correo: string = "";
+
+  goInicio(): void {
+    console.log('Hola '+this.correo);
+  }
 }

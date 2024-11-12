@@ -1,0 +1,145 @@
+
+    <div id="title" class="d-none d-md-block d-lg-block">
+      <h1 class="my-btn">Nathan - Juegos de mesa</h1>
+      <div class="titulo">Somos una nueva pyme con atractivos precios y productos que te dar&aacute;n
+        entretenci&oacute;n todo el a&ntilde;</div>
+    </div>
+
+    <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
+      <div class="container-fluid">
+        <a class="navbar-brand d-lg-none" href="#">Nathan</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01"
+          aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarColor01">
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item">
+              <a class="nav-link active" href="./index.html">Inicio
+                <span class="visually-hidden">(current)</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="cartas.html">Cartas</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="familiares.html">Familiares</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="ninos.html">Ni&ntilde;os</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="interactivos.html">Interactivos</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-bs-toggle="offcanvas" href="#offcanvasRegistro" role="button" aria-controls="offcanvasRegistro" onclick="clienteLimpiar()">
+                Registro
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="https://www.google.cl/" target="_blank">
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/1280px-Google_2015_logo.svg.png"
+                  height="20px">
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="https://www.duoc.cl" target="_blank">
+                <img src="https://www.duoc.cl/wp-content/themes/wordpress-duoc-cl/images/logo-duoc.svg" height="20px">
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <h3>{{categoria[categoriaSel]}}</h3>
+
+    <hr>
+
+    <div class="row">
+
+        <div class="col-lg-3 col-sm-6" *ngFor="let p of producto">
+      
+            <div class="card mb-3">
+              <h3 class="card-header">{{p.titulo}}</h3>
+              <div class="card-body">
+                <h6 class="card-subtitle text-muted">{{p.descripcion}}</h6>
+              </div>
+              <img src="images/{{p.imagen}}" width="100%" height="200" class="img-resposive">
+              <h3><small><b>{{p.descuento}}</b></small> Valor $ {{p.valor}}</h3>
+            </div>
+    
+        </div>
+
+
+    </div>
+
+    <div>
+      <div id="map"></div>
+    </div>
+    <p>Jonathan Bernal V. - Duoc &copy; 2024</p>
+
+    
+  <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasRegistro" aria-labelledby="offcanvasRegistroLabel">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="offcanvasRegistroLabel">Registro</h5>
+      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+
+      <div>
+
+        <form id="form-registro" method="post"> 
+          <fieldset>
+
+            <legend>Datos de contacto</legend>
+
+            <div>
+              <label for="usuario" class="form-label mt-4">Nombre de usuario</label>
+              <input type="text" class="form-control" id="usuario" onblur="checUser(this.value);" >
+              <span id="check_user_msg"></span>
+            </div>
+
+            <div>
+              <label for="contrasena1" class="form-label mt-4">Contrase&ntilde;a</label>
+              <input type="password" class="form-control" id="contrasena1" >
+            </div>
+
+            <div>
+              <label for="contrasena2" class="form-label mt-4">Reingrese la contrase&ntilde;a</label>
+              <input type="password" class="form-control" id="contrasena2" >
+            </div>
+
+            <div id="check_pass"></div>
+
+            <div>
+              <label for="nombre" class="form-label mt-4">Nombre completo</label>
+              <input type="text" class="form-control" id="nombre" >
+            </div>
+
+            <div>
+              <label for="fecha" class="form-label mt-4">Fecha de nacimiento</label>
+              <input type="date" class="form-control" id="fecha" placeholder="99/99/9999">
+            </div>
+
+            <div id="check_edad"></div>
+
+            <div>
+              <label for="direccion" class="form-label mt-4">Direcci&oacute;n de despacho</label>
+              <input type="text" class="form-control" id="direccion" >
+            </div>
+
+            <hr>
+
+            <span id="check_msg"></span>
+
+            <button type="button" class="btn btn-primary" onclick="clienteRegistrar();" >Registrar</button>
+            <button type="button" class="btn btn-info" onclick="clienteLimpiar();" >Limpiar</button>
+
+          </fieldset>
+        </form>
+      </div>
+
+    </div>
+  </div>
