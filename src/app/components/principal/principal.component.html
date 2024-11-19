@@ -19,12 +19,13 @@
           </a>
         </li>
         @for (c of categorias; track c.id) {
-          <li class="nav-item">
-            <button class="nav-link" (click)="goDetalle(c.link)">{{c.titulo}}</button>
-          </li>
+        <li class="nav-item">
+          <button class="nav-link" (click)="goDetalle(c.link)">{{c.titulo}}</button>
+        </li>
         }
         <li class="nav-item">
-          <a class="nav-link" data-bs-toggle="offcanvas" href="#offcanvasRegistro" role="button" aria-controls="offcanvasRegistro" onclick="clienteLimpiar()">
+          <a class="nav-link" data-bs-toggle="offcanvas" href="#offcanvasRegistro" role="button"
+            aria-controls="offcanvasRegistro" onclick="clienteLimpiar()">
             Registro
           </a>
         </li>
@@ -52,21 +53,21 @@
 <div class="row">
 
   @for (c of categorias; track c.id) {
-    <div class="col-lg-3 col-sm-6">
+  <div class="col-lg-3 col-sm-6">
 
-      <div class="card mb-">
-        <h3 class="card-header">{{c.titulo}}</h3>
-        <div class="card-body">
-          <h5 class="card-title">{{c.nombre}}</h5>
-          <h6 class="card-subtitle text-muted">{{c.descripcion}}</h6>
-        </div>
-        <img src="images/{{c.imagen}}" width="100%" height="200" />
-        <div class="card-body">
-          <button class="card-link" (click)="goDetalle(c.link)">Ver juegos</button>
-        </div>
+    <div class="card mb-">
+      <h3 class="card-header">{{c.titulo}}</h3>
+      <div class="card-body">
+        <h5 class="card-title">{{c.nombre}}</h5>
+        <h6 class="card-subtitle text-muted">{{c.descripcion}}</h6>
       </div>
+      <img src="images/{{c.imagen}}" width="100%" height="200" />
+      <div class="card-body">
+        <button class="card-link" (click)="goDetalle(c.link)">Ver juegos</button>
+      </div>
+    </div>
   </div>
-}
+  }
 
 </div>
 
@@ -85,7 +86,7 @@
 
     <div>
 
-      <form id="form-registro" method="post">
+      <form [formGroup]="miFormulario" (ngSubmit)="submitForm()">
 
         <fieldset>
 
@@ -94,46 +95,78 @@
           <div>
 
             <label for="usuario" class="form-label mt-4">Nombre de usuario</label>
-            <input type="text" class="form-control" id="usuario" onblur="checUser(this.value);">
-            <span id="check_user_msg"></span>
+            <input type="text" class="form-control" id="usuario" onblur="checUser(this.value);" formControlName="user" placeholder="usuario@dominio.cl">
+            <div *ngIf="miFormulario.get('user')!.touched && miFormulario.get('user')!.errors">
+              <div class="alert alert-danger" *ngIf="miFormulario.get('user')!.value == ''">
+                El nombre de usuario es obligatorio.
+              </div>
+              <div class="alert alert-danger" *ngIf="miFormulario.get('pass')!.hasError('required') || miFormulario.get('user')!.hasError('email')">
+                El nombre debe ser un email.
+              </div>
+            </div>
+
           </div>
 
           <div>
             <label for="contrasena1" class="form-label mt-4">Contrase&ntilde;a</label>
-            <input type="password" class="form-control" id="contrasena1">
+            <input type="password" class="form-control" id="contrasena1" formControlName="pass" maxlength="18">
+            <div *ngIf="miFormulario.get('pass')!.touched && miFormulario.get('pass')!.errors">
+              <div class="alert alert-danger" *ngIf="miFormulario.get('pass')!.hasError('required')">
+                La contrasdeña es obligatoria.
+              </div>
+              <div class="alert alert-danger" *ngIf="miFormulario.get('pass')!.hasError('pattern')">
+                La contraseña debe contener una letra mayúscula y un número.
+              </div>
+              <div class="alert alert-danger" *ngIf="miFormulario.get('pass')!.value.length < 6 || miFormulario.get('pass')!.value.length > 18">
+                El rango de caracteres debe ser entre 6 y 18 caracteres.
+              </div>
+            </div>
           </div>
 
           <div>
             <label for="contrasena2" class="form-label mt-4">Reingrese la contrase&ntilde;a</label>
-            <input type="password" class="form-control" id="contrasena2">
+            <input type="password" class="form-control" id="contrasena2" formControlName="pass2">
+            <div *ngIf="miFormulario.get('pass2')!.touched">
+              <div class="alert alert-danger" *ngIf="miFormulario.get('pass2')!.hasError('required')">
+                La contrasdeña es obligatoria.
+              </div>
+              <div class="alert alert-danger" *ngIf="miFormulario.get('pass2')!.value != miFormulario.get('pass')!.value">
+                Las contraseñas no coinciden.
+              </div>
+            </div>
           </div>
-
-          <div id="check_pass"></div>
 
           <div>
             <label for="nombre" class="form-label mt-4">Nombre completo</label>
-            <input type="text" class="form-control" id="nombre">
+            <input type="text" class="form-control" id="nombre" formControlName="nom">
+            <div *ngIf="miFormulario.get('nom')!.touched && miFormulario.get('nom')!.errors">
+              <div class="alert alert-danger" *ngIf="miFormulario.get('nom')!.hasError('required')">
+                El nombre es obligatorio.
+              </div>
+            </div>
           </div>
 
           <div>
             <label for="fecha" class="form-label mt-4">Fecha de nacimiento</label>
-            <input type="date" class="form-control" id="fecha" placeholder="99/99/9999">
+            <input type="date" class="form-control" id="fecha" placeholder="99/99/9999" formControlName="fec">
+            <div *ngIf="miFormulario.get('fec')!.touched && miFormulario.get('fec')!.errors">
+              <div class="alert alert-danger" *ngIf="miFormulario.get('fec')!.hasError('required')">
+                La fecha de nacimiento es obligatoria.
+              </div>
+            </div>
           </div>
-
-          <div id="check_edad"></div>
-
 
           <div>
             <label for="direccion" class="form-label mt-4">Direcci&oacute;n de despacho</label>
-            <input type="text" class="form-control" id="direccion">
+            <input type="text" class="form-control" id="direccion" formControlName="dir">
           </div>
 
-          <hr>
+            <hr>
 
-          <span id="check_msg"></span>
-
-          <button type="button" class="btn btn-primary" onclick="clienteRegistrar();">Registrar</button>
+          <button type="submit" [disabled]="!miFormulario.valid" class="btn btn-primary">Registrar</button>
           <button type="button" class="btn btn-info" onclick="clienteLimpiar();">Limpiar</button>
+
+          <div *ngIf="resultado !== undefined">{{resultado}}</div>
 
         </fieldset>
 
@@ -143,7 +176,6 @@
   </div>
 </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-    crossorigin="anonymous"></script>
-  <script src="js/scripts.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<script src="js/scripts.js"></script>

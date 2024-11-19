@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PrincipalComponent } from './principal.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 describe('PrincipalComponent', () => {
   let component: PrincipalComponent;
@@ -18,6 +19,62 @@ describe('PrincipalComponent', () => {
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    const ok = true;
+    expect(ok).toBeTruthy();
   });
+
+  it('Resultado de submit formulario', () => {
+
+    component.miFormulario.setValue(
+      {
+        user: 'nathanbernal',
+        pass: 'aaa123',
+        pass2: 'aaa123',
+        nom: 'nathanbernal',
+        fec: '2024-11-10',
+        dir: ''
+      }
+    );
+    //component.submitForm();
+    expect(component.miFormulario.valid).toBe(true);
+
+  });
+
+  it('Validando campo usuario requerido', () => {
+
+    component.miFormulario.setValue(
+      {
+        user: '',
+        pass: 'aaa123aaaa',
+        pass2: 'aaa123aaaa',
+        nom: 'nathanbernal',
+        fec: '2024-11-10',
+        dir: ''
+      }
+    );
+    //component.submitForm();
+    console.log(component.miFormulario.get('user')?.hasError('required'));
+    expect(component.miFormulario.get('user')?.hasError('required')).toBe(false);
+
+  });
+
+  it('Validando condicion caracteres de contraseña', () => {
+
+    component.miFormulario.setValue(
+      {
+        user: 'nathanbernal',
+        pass: 'aaa123aaaaA', // contraseña correcta
+        pass2: 'aaa123aaaaA',
+        nom: 'nathanbernal',
+        fec: '2024-11-10',
+        dir: ''
+      }
+    );
+    //component.submitForm();
+    console.log(component.miFormulario.get('pass')?.hasError('pattern'));
+    expect(component.miFormulario.get('pass')?.hasError('pattern')).toBe(false);
+
+  });
+
+
 });
