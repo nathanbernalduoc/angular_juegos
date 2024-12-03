@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { formatDate, CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { JsonService } from '../../services/categoria.service';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { HttpTestingController } from '@angular/common/http/testing';
+import { JsonService } from '../../services/categoria.service';
 
 @Component({
   selector: 'app-principal',
@@ -11,7 +12,7 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
   imports: [ CommonModule , ReactiveFormsModule, HttpClientModule],
   templateUrl: './principal.component.html',
   styleUrl: './principal.component.css',
-  providers: [JsonService]
+  providers: [JsonService, HttpClient]
 })
 
 export class PrincipalComponent implements OnInit {
@@ -26,14 +27,14 @@ export class PrincipalComponent implements OnInit {
   constructor(
     private router: Router,
     private fb: FormBuilder,
-    private jsonService: JsonService
+    private jsonService: JsonService,
   ) {}
 
   ngOnInit(): void {
 
     this.getCategoria();
 
-    console.log('Invocando rest');
+    console.log('Categoría no recuperada '+JSON.stringify(this.categoria));
 
     this.miFormulario = this.fb.group({
       user: ['', [Validators.required, Validators.email]],
@@ -50,7 +51,8 @@ export class PrincipalComponent implements OnInit {
   getCategoria() {
     this.jsonService.getJsonData().subscribe(
       valor => {
-        this.categoria = valor;
+        console.log("JSON recuperado "+JSON.stringify(valor));
+        this.categoria = valor.categoria;
       },
       error => {
         console.log("Se ha producido un error\nApi Recover error: "+error.message+" / "+error.status);

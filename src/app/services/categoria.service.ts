@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 
 export class JsonService {
 
-  private jsonUrl = 'https://sibio.cl/duoc/categoria.json';
+  private jsonUrl = 'https://water-container-default-rtdb.firebaseio.com/juegos.json';
 
   constructor(private http: HttpClient) { }
 
