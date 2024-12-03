@@ -34,27 +34,30 @@ export class DetalleComponent implements OnInit {
 
     this.getInventario();
 
-    console.log(this.producto);
+    console.log(this.producto_list.ninos);
 
     console.log('Categoria '+this.router.snapshot.paramMap.get('categoria'));
 
-    this.categoriaSel = this.router.snapshot.paramMap.get('categoria');
-    if (this.router.snapshot.paramMap.get('categoria') == 'cartas') {
-      this.producto = this.producto.cartas; //this.producto_list['cartas'];
-    } else if (this.router.snapshot.paramMap.get('categoria') == 'familiares') {
-      this.producto = this.producto.familiares; //this.producto_list['familiares'];
-    } else if (this.router.snapshot.paramMap.get('categoria') == 'ninos') {
-      this.producto = this.producto.ninos; // this.producto_list['ninos'];
-    } else if (this.router.snapshot.paramMap.get('categoria') == 'interactivos') {
-      this.producto = this.producto.interactivos; // this.producto_list['interactivos'];
-    }
   }
 
   getInventario() {
     this.inventarioService.getJsonData().subscribe(
       valor => {
         console.log("JSON recuperado "+JSON.stringify(valor));
-        this.producto = valor.inventario;
+        this.producto_list = valor.inventario;
+
+
+        this.categoriaSel = this.router.snapshot.paramMap.get('categoria');
+        if (this.router.snapshot.paramMap.get('categoria') == 'cartas') {
+          this.producto = this.producto_list.cartas; //this.producto_list['cartas'];
+        } else if (this.router.snapshot.paramMap.get('categoria') == 'familiares') {
+          this.producto = this.producto_list.familiares; //this.producto_list['familiares'];
+        } else if (this.router.snapshot.paramMap.get('categoria') == 'ninos') {
+          this.producto = this.producto_list.ninos; // this.producto_list['ninos'];
+        } else if (this.router.snapshot.paramMap.get('categoria') == 'interactivos') {
+          this.producto = this.producto_list.interactivos; // this.producto_list['interactivos'];
+        }
+
       },
       error => {
         console.log("Se ha producido un error\nApi Recover error: "+error.message+" / "+error.status);
