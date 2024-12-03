@@ -1,58 +1,40 @@
-import { Component, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { formatDate, CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-//import { FormsModule } from '@angular/forms';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { JsonService } from '../../services/categoria.service';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-principal',
   standalone: true,
-  imports: [ CommonModule , ReactiveFormsModule],
+  imports: [ CommonModule , ReactiveFormsModule, HttpClientModule],
   templateUrl: './principal.component.html',
-  styleUrl: './principal.component.css'
+  styleUrl: './principal.component.css',
+  providers: [JsonService]
 })
 
-export class PrincipalComponent {
+export class PrincipalComponent implements OnInit {
 
   resultado:string = '';
   titulo = 'Categorías';
-  categorias = [
-    {
-      id: 1,
-      titulo:'Cartas',
-      nombre: 'Naipes variados',
-      descripcion: 'Diferentes tipos de juegos en donde se usan cartas',
-      imagen: 'juego12.jpg',
-      link: 'cartas' },
-    {
-      id: 2,
-      titulo:'Familiares',
-      nombre: 'Para la familia',
-      descripcion: 'Juegos para jugar en familia.',
-      imagen: 'juego1.webp',
-      link: 'familiares' },
-    {
-      id: 3,
-      titulo:'Niños',
-      nombre: 'Pequeños',
-      descripcion: 'Accesorios y juegos para los niños más pequeños de la familia.s',
-      imagen: 'juego6.webp',
-      link: 'ninos' },
-    {
-      id: 4,
-      titulo:'Interactivos',
-      nombre: 'Juegos con interacción',
-      descripcion: 'Juegos con interacción entre los jugadores',
-      imagen: 'juego4.webp',
-      link: 'interactivos'
-    },
-  ];
+  categoria: any[] = []; // {} objeto | [] array
+  inventario: any[] = []; // {} objeto | [] array
 
   miFormulario!: FormGroup;
 
-  constructor(private router: Router, private fb: FormBuilder) {}
+  constructor(
+    private router: Router,
+    private fb: FormBuilder,
+    private jsonService: JsonService
+  ) {}
 
   ngOnInit(): void {
+
+    this.getCategoria();
+
+    console.log('Invocando rest');
+
     this.miFormulario = this.fb.group({
       user: ['', [Validators.required, Validators.email]],
       pass: ['', [Validators.required, Validators.pattern(/[0-9]/), Validators.pattern(/[A-Z]/), Validators.minLength(6), Validators.maxLength(18)]],
@@ -60,7 +42,21 @@ export class PrincipalComponent {
       nom: ['', Validators.required],
       fec: ['', Validators.required],
       dir: [''],
-    })
+    });
+
+  }
+
+
+  getCategoria() {
+    this.jsonService.getJsonData().subscribe(
+      valor => {
+        this.categoria = valor;
+      },
+      error => {
+        console.log("Se ha producido un error\nApi Recover error: "+error.message+" / "+error.status);
+      },
+      () => { console.log('Ending!'); } 
+    );
   }
 
   goDetalle(categoria:string): void {
@@ -85,6 +81,7 @@ export class PrincipalComponent {
       console.log('Error '+this.miFormulario.get('user')!.hasError('email'));
       console.log('Valid error '+this.miFormulario.valid);
     }
+
   }
 
   validaEdad(fecIn:string): any {

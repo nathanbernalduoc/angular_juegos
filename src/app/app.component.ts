@@ -15,4 +15,5 @@ export class AppComponent {
   goInicio(): void {
     console.log('Hola '+this.correo);
   }
+
 }

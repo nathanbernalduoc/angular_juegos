@@ -18,7 +18,7 @@
             <span class="visually-hidden">(current)</span>
           </a>
         </li>
-        @for (c of categorias; track c.id) {
+        @for (c of categoria; track c.id) {
         <li class="nav-item">
           <button class="nav-link" (click)="goDetalle(c.link)">{{c.titulo}}</button>
         </li>
@@ -52,23 +52,26 @@
 
 <div class="row">
 
-  @for (c of categorias; track c.id) {
-  <div class="col-lg-3 col-sm-6">
+  <div *ngIf="categoria && categoria.length>0; else noData">
+    <div *ngFor="let c of categoria" class="col-lg-3 col-sm-6">
 
-    <div class="card mb-">
-      <h3 class="card-header">{{c.titulo}}</h3>
-      <div class="card-body">
-        <h5 class="card-title">{{c.nombre}}</h5>
-        <h6 class="card-subtitle text-muted">{{c.descripcion}}</h6>
-      </div>
-      <img src="images/{{c.imagen}}" width="100%" height="200" />
-      <div class="card-body">
-        <button class="card-link" (click)="goDetalle(c.link)">Ver juegos</button>
+      <div class="card mb-">
+        <h3 class="card-header">{{c.titulo}}</h3>
+        <div class="card-body">
+          <h5 class="card-title">{{c.nombre}}</h5>
+          <h6 class="card-subtitle text-muted">{{c.descripcion}}</h6>
+        </div>
+        <img src="images/{{c.imagen}}" width="100%" height="200" />
+        <div class="card-body">
+          <button class="card-link" (click)="goDetalle(c.link)">Ver juegos</button>
+        </div>
       </div>
     </div>
   </div>
-  }
 
+  <ng-template #noData>
+    <p>No se han encontrado categorías disponibles.</p>
+  </ng-template>
 </div>
 
 <div class="row">
